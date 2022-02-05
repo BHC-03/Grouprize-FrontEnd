@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Ubuntu&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    height: 100vh;
+
+}
+.loginForm,.registerForm,.interestsForm{
+    border:2px solid rgba(105, 101, 101, 0.637);
+    border-radius: 15px;
+    height:75vh;
+    width: 420px;
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.textInputContainer{
+    display: flex;
+    /* width: 60%; */
+    border: hotpink 1px solid;
+    font-size: 2rem;
+    border-radius: 10px;
+    height:45px;
+    align-items: center;
+    padding: 20px 8px;
+}
+.textInput{
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    padding-left: 5px;
+}
+
+.inputIcon{
+    border-right: 1px hotpink solid;
+    padding-right: 5px;
+    opacity: 0.5;
+    color: hotpink;
+}
+.passwordIcon,.usernameIcon{
+    font-size: 2.3rem;
+}
+.loginInputsContainer,.registerInputContainer{
+    position: relative;
+    top: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 180px;
+}
+.button{
+    cursor: pointer;
+    width: 35%;
+    margin-bottom: 40px;
+    background-color: #54d7ff;
+    color: #fff;
+    border: 2px solid #00c3ff;
+    font-family: sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+.registerButton{
+    background-color: #43c1e77e;
+    position: relative;
+    left: 155px;
+    width: 40px;
+    text-align: center;
+    border-radius: 50%;
+    display: grid;
+    align-items: center;
+    padding-left: 8px;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+.registerButton:hover{
+    background-color:#65d6f8 ;
+}
+
+.registerForm{
+    border-color: transparent;
+    top: 50%;
+    transform:  translate(-50%,-50%);
+    transition: transform 0.5s ease-in-out;
+    
+}
+.interestsForm{
+    border-color: transparent;
+    top: 50%;
+    transform: translate(50%,-50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(auto-fill,60px);
+    padding: 20px 10px;
+    transition: transform 0.5s ease-in-out;
+}
+.interest{
+    width: 120px;
+    cursor: pointer;
+    background-color: #43c1e77e;
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out;
+}
+.interest:hover{
+    background-color:#65d6f8 ;
+}
+.regisetAndInterestsForm{
+    overflow: hidden;
+    border:2px solid rgba(105, 101, 101, 0.637);
+    border-radius: 15px;
+    height:75vh;
+    width: 420px;
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.registerSubmitButton{
+    position: fixed;
+    width: 45%;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    background-color: #ff3791ab;
+    font-weight: 200;
+    transition: background-color 0.2s ease-in-out;
+    
+}
+.registerSubmitButton:hover{
+    background-color: #ff3791;
+}
+.homePageContainer{
+    width: 70%;
+    height: 100%;
+    margin-left: 20px;
+    overflow: hidden;
+}
+.homePageContainer h3{
+    font-size: 8rem;
+    margin-top: 40px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #167c95;
+}
+.homePageContainer p{
+    font-size:2.5rem ;
+    color:rgb(175, 172, 172) ;
+    margin-top: 10px;
+}
+.homePageButtons{
+    margin-left: 30px;
+    margin-top: 40px;
+    height: 400px;
+}
+.registerHomeButton,.loginHomeButton{
+    padding:6px 15px ;
+    border-radius: 25px;
+    font-size: 1.7rem;
+    font-weight: 40px;
+}
+.registerHomeButton{
+    background-color: transparent;
+    border-color: #167c95;
+    color:#167c95;
+}
+.loginHomeButton{
+    margin-left: 10px;
+    background-color: #167c95;
+    border-color: #b1edff;
+}
