@@ -1,11 +1,49 @@
 import React, {useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope,faLock,faArrowRight,faUser} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope,faLock,faArrowRight,faUser,faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import InterestElement from "./interestelement";
 
-const RegisterForm = ()=>{
+const RegisterForm = ({setSignedUserInfo,signedUserInfo,userInfo,setUserInfo})=>{
+    
+    const [interestsIds,setInterestsIds] = useState([]);
+    const [interestList,setInterestList] = useState([]);
+    
     const [registerStep2,setRegisterStep2] = useState(false);
-    function nextHandler(){
-        setRegisterStep2(true)
+    async function nextHandler(){
+        await axios.get('http://127.0.0.1:8000/interests/').then(
+            data=>{
+                setInterestList(data.data)
+                setInterestsIds([]);
+                setRegisterStep2(!registerStep2)
+            }
+        )
+        
+    }
+     function registerSubmitHandler(){
+        axios.post('http://127.0.0.1:8000/users/',{email:userInfo.email,name:userInfo.username,password:userInfo.password}).then(async data=>{
+            setSignedUserInfo(data.data)
+            let tempdata = data.data;
+            
+            axios.post('http://127.0.0.1:8000/interests/subscribe/'
+            ,{id:[...interestsIds]},{headers:{
+                Authorization:`Bearer ${tempdata.token}`
+            }}
+            )
+            
+            
+
+        })
+    }
+    function emailHandler(e){
+        setUserInfo({...userInfo,email:e.target.value})
+    }
+    function passwordHandler(e){
+        setUserInfo({...userInfo,password:e.target.value})
+    }
+    function usernameHandler(e){
+        setUserInfo({...userInfo,username:e.target.value})
     }
     let registerFormStyling;
     let interestFormStyling;
@@ -24,37 +62,42 @@ const RegisterForm = ()=>{
             transform:  'translate(50%,-50%)'
         }
     }
+    const zby =true;
     return(
         <div className="regisetAndInterestsForm">
             <div className="registerForm" style={registerFormStyling}>
                 <div className="registerInputContainer">
                     <div className="textInputContainer">
                         <FontAwesomeIcon icon={faEnvelope} className="inputIcon emailIcon" />
-                        <input type="text" className="textInput emailInput" />
+                        <input type="text" value={userInfo.email} onChange={emailHandler} className="textInput emailInput" />
                     </div>
                     <div className="textInputContainer">
                         <FontAwesomeIcon icon={faLock} className="inputIcon passwordIcon" />
-                        <input type="text" className="textInput passwordInput"/>
+                        <input value={userInfo.password} onChange={passwordHandler} type="password" className="textInput passwordInput"/>
                     </div>
                     <div className="textInputContainer">
                         <FontAwesomeIcon icon={faUser} className="inputIcon usernameIcon" />
-                        <input type="text"className="textInput usernameInput" />
+                        <input  value={userInfo.username} onChange={usernameHandler} type="text"className="textInput usernameInput" />
                     </div>
                 </div>
-                <a onClick={nextHandler} className="button registerButton">
+                <p onClick={nextHandler} className="button registerButton">
                     <FontAwesomeIcon className="nextArrow" icon={faArrowRight} />
-                </a>
+                </p>
+                <p className="registerP loginP"> you already have an account ? <Link to={'/login/'}><a href="#asdas" className="registerA">LogIn</a></Link> </p>
             </div>
             <div className="interestsForm" style={interestFormStyling}>
-                <a className="button interest">Programming</a>
-                <a className="button interest">Web Dev</a>
-                <a className="button interest">Android</a>
-                <a className="button interest">Drawing</a>
-                <a className="button interest">Anime</a>
-                <a className="button interest">Movies</a>
-                <a className="button interest">Tv Shows</a>
-                <a className="button registerSubmitButton">Register</a>
+                {
+                    interestList.map(interest=>{
+                        return (
+                            <InterestElement key={interest.id} interestsIds={interestsIds} setInterestsIds={setInterestsIds} interest={interest} />
+                        )
+                    })
+                }
+                <Link to={'/mainpage/'}><p onClick={registerSubmitHandler} className="button registerSubmitButton">Register</p></Link>
+                <p  onClick={nextHandler} className="button registerBackButton"><FontAwesomeIcon className="arrowBack" icon={faArrowLeft}/></p>
+                <p className="registerP loginP"> you already have an account ? <Link to={'/login/'}><a href="#af" className="registerA">LogIn</a></Link> </p>
             </div>
+            
         </div>
     )
 }
