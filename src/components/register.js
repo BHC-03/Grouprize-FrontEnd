@@ -4,12 +4,14 @@ import { faEnvelope,faLock,faArrowRight,faUser,faArrowLeft} from "@fortawesome/f
 import { Link } from "react-router-dom";
 import axios from "axios";
 import InterestElement from "./interestelement";
+import {userInfoAtom,gettingUserinfoAtom} from '../RecoilStuff/index';
+import {useSetRecoilState,useRecoilState } from "recoil";
 
-const RegisterForm = ({setSignedUserInfo,signedUserInfo,userInfo,setUserInfo})=>{
-    
+const RegisterForm = ({})=>{
+    const [userInfo,setUserInfo] = useRecoilState(gettingUserinfoAtom);
+    const setSignedUserInfo = useSetRecoilState(userInfoAtom);
     const [interestsIds,setInterestsIds] = useState([]);
     const [interestList,setInterestList] = useState([]);
-    
     const [registerStep2,setRegisterStep2] = useState(false);
     async function nextHandler(){
         await axios.get('http://127.0.0.1:8000/interests/').then(
@@ -62,7 +64,6 @@ const RegisterForm = ({setSignedUserInfo,signedUserInfo,userInfo,setUserInfo})=>
             transform:  'translate(50%,-50%)'
         }
     }
-    const zby =true;
     return(
         <div className="regisetAndInterestsForm">
             <div className="registerForm" style={registerFormStyling}>

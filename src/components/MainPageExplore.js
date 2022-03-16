@@ -2,27 +2,29 @@ import axios from "axios";
 import React,{useState,useEffect} from "react";
 import Group from "./group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus ,faTimes} from "@fortawesome/free-solid-svg-icons";
+import { faPlus ,faTimes,faCommentAlt,faSignInAlt} from "@fortawesome/free-solid-svg-icons";
+import Chat from "./Chat";
+import AdminPopUp from "./PopUps/adminPopUp";
+import MemberPopUp from "./PopUps/memberPopUp";
+import NonMemberPopUp from "./PopUps/nonMemberPopup";
+import { useRecoilValue} from "recoil";
+import { userInfoAtom,activeGroupAtom,isMemberSelector,isAdminSelector } from "../RecoilStuff/index";
+const MainPageExplore = ()=>{
 
-const MainPageExplore = ({signedUserInfo})=>{
+    //recoil shit
+    const signedUserInfo = useRecoilValue(userInfoAtom);
+    const activeGroup = useRecoilValue(activeGroupAtom);
+    const isAdmin = useRecoilValue(isAdminSelector);
+    const isMember = useRecoilValue(isMemberSelector);
+
+
+    //local states 
     const [groups,setGroups] = useState([]);
-    const [activeGroup,setActiveGroup] = useState();
     const [popUpActive,setPopUpActive] = useState(false)
-    const [memberShipExistance,setMembershipExistance] = useState(false);
+
     let popUpStyling;
     let pageStyling;
-    function requestHandler(){
-        axios.post('http://127.0.0.1:8000/memberships/',{group:activeGroup.id},{headers:{
-            Authorization: `Bearer ${signedUserInfo.token}`
-        }}).then(
-            data=> {console.log(data)
-            setMembershipExistance(true);
 
-        
-            }
-        )
-        
-    }
     function closeHandler(){
         setPopUpActive(false)
     }
@@ -49,32 +51,31 @@ const MainPageExplore = ({signedUserInfo})=>{
         }
     }
     useEffect(()=>{
-        axios.get('http://127.0.0.1:8000/ads/',{headers:{Authorization:`Bearer ${signedUserInfo.token}`}}).then(
+        if(signedUserInfo.token){
+            axios.get('http://127.0.0.1:8000/ads/',{headers:{Authorization:`Bearer ${signedUserInfo.token}`}}).then(
             data=>{
+                console.log(data.data);
                 setGroups(data.data);
             }
         )
+        }
     }
-    ,[])
+    ,[signedUserInfo])
     return (
+        
         <div className="mainpageAndPopUpContainer">
             <div style={pageStyling} className="mainPageExploreContainer ">
                 <h3 className="ExploreTitle mainPageTitle">Groups</h3>
                 <div className="exploreGroupsContainer">
                     {
                         groups.map(group=>{
-                            return <Group key={group.id} signedUserInfo={signedUserInfo} usergroup={group} setActiveGroup={setActiveGroup} setPopUpActive={setPopUpActive} setMembershipExistance={setMembershipExistance}/>
+                            return <Group key={group.id}  usergroup={group}  setPopUpActive={setPopUpActive} />
                         })
                     }
                 </div>
             </div>
-            {activeGroup?<div style={popUpStyling} className="popUpDetails">
-                    <p className="closeIcon"><FontAwesomeIcon icon={faTimes} onClick={closeHandler} /></p>
-                    <h3 className="groupTitleDetails">{activeGroup.title}</h3>
-                    <p className="groupDiscreption">{activeGroup.description}</p>
-                    <p className="groupAdmin">{activeGroup.user.name}</p>
-                    {memberShipExistance?<p  className="alreadyIn">User already has a membership</p>:<p onClick={requestHandler} className="button requestbutton"><FontAwesomeIcon icon={faPlus} /></p>}
-            </div> : ''}
+            {activeGroup? isMember?
+            isAdmin? <AdminPopUp popUpStyling={popUpStyling} setPopUpActive={setPopUpActive} /> :<MemberPopUp popUpStyling={popUpStyling} setPopUpActive={setPopUpActive} /> :<NonMemberPopUp  popUpStyling={popUpStyling} setPopUpActive={setPopUpActive}/>: ''}
             
         </div>
     )

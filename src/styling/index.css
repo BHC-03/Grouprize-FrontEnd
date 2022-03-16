@@ -321,7 +321,7 @@ body {
   border: 2px solid black;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -40%);
   height: 600px;
   width: 900px;
   border-radius: 20px;
@@ -483,4 +483,104 @@ body {
   text-shadow: 1px 1px 1px #ff3791;
   font-weight: 600;
   font-size: 1.5rem;
+}
+.ChatContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.chatInputContainer {
+  display: flex;
+  border: 1px solid black;
+  margin-bottom: 37px;
+  height: 70px;
+}
+.messageInput {
+  outline: none;
+  border: none;
+  height: 100%;
+  font-size: 3rem;
+  width: 90%;
+  padding-left: 20px;
+}
+.messageButton {
+  border-radius: 0px;
+  height: 100%;
+  font-size: 2rem;
+  width: 10%;
+  border: none;
+  outline: none;
+  margin: 0;
+  background-color: #024455;
+}
+.sendIcon {
+  margin-top: 12px;
+}
+.chatLoggerContainer {
+  /* background-color: #024455; */
+  height: 100%;
+  outline: none;
+  border: 1px solid black;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 6px 10px;
+  overflow-y: scroll;
+}
+.message {
+  min-height: 70px;
+  display: flex;
+  /* align-items: center; */
+  /* padding: 20px 0px; */
+}
+.messageInfo {
+  height: 100%;
+  min-width: 30%;
+  max-width: 70%;
+  min-height: 70px;
+  margin-left: 10px;
+  margin-top: 7px;
+}
+.userMessage,
+.otherMessage {
+  background-color: #00c3ff;
+  border-radius: 10px;
+  min-height: 40px;
+  padding: 6px 6px;
+  color: #fff;
+  font-weight: 550;
+  font-size: 1.3rem;
+}
+.otherMessage {
+  margin: 0;
+  margin-right: 5px;
+  background-color: #c4c7c4cb;
+  color: rgb(34, 33, 33);
+}
+.userImage,
+.otherImage {
+  background-color: #08485c;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+.otherImage {
+  background-color: #ff3791;
+}
+.messageDate {
+  margin-top: 5px;
+}
+.othersMessageContainer {
+  flex-direction: row-reverse;
+}
+.otherDate {
+  text-align: right;
+}
+.chatIconMemberShit {
+  flex: 1;
+  padding-left: 45%;
+  border-right: none;
 }

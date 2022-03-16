@@ -1,17 +1,33 @@
 import axios from "axios";
 import React,{useState,useEffect} from "react";
 import Group from "./membershipGroup";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCommentAlt,faSignInAlt,faTimes,faCheck } from "@fortawesome/free-solid-svg-icons";
+import MemberPopUp from "./PopUps/memberPopUp";
+import NonMemberPopUp from "./PopUps/nonMemberPopup";
+import AdminPopUp from "./PopUps/adminPopUp";
 import Request from "./request";
-import Chat from "./Chat";
-const MainPageMembership = ({signedUserInfo})=>{
-    
-    const [usersGroups,setUsersGroups]=useState()
-    const [rejectedGroups,setRejectedGroups]=useState([])
-    const [adminOrMemberGroups,setAdminOrMemberGroups]=useState([])
-    const [activeGroup,setActiveGroup]=useState({})
-    const [pindingGroups,setPindingGroups]=useState([])
+import {
+    userInfoAtom
+    ,userGroupsAtom
+    ,pendingGroupsSelector
+    ,memberGroupsSelector
+    ,rejectedGroupsSelector
+    ,activeGroupAtom
+    ,isMemberSelector
+    ,isAdminSelector
+ } from "../RecoilStuff/index";
+import { useRecoilValue,useRecoilState } from "recoil";
+const MainPageMembership = ()=>{
+
+    //Recoil Atoms And selectors
+    const [usersGroups,setUsersGroups] = useRecoilState(userGroupsAtom);
+    const signedUserInfo = useRecoilValue(userInfoAtom);
+    const rejectedGroups = useRecoilValue(rejectedGroupsSelector);
+    const pindingGroups = useRecoilValue(pendingGroupsSelector);
+    const adminOrMemberGroups = useRecoilValue(memberGroupsSelector);
+    const activeGroup = useRecoilValue(activeGroupAtom);
+    const isMember = useRecoilValue(isMemberSelector);
+    const isAdmin = useRecoilValue(isAdminSelector);
+    //local States
     const [popUpActive,setPopUpActive] = useState(false)
     let popUpStyling;
     let pageStyling;
@@ -37,42 +53,21 @@ const MainPageMembership = ({signedUserInfo})=>{
             'pointer-events':'all'
         }
     }
-    function closeHandler(){
-        setPopUpActive(false);
-    }
+   
     useEffect(()=>{
+        console.log(signedUserInfo.token)
         axios.get('http://127.0.0.1:8000/groups/',{headers:{
             Authorization: `Bearer ${signedUserInfo.token}`
         }}).then(data=>{
+            console.log(data.data)
             setUsersGroups( data.data.filter(group=>{
                 let memberships = group.memberships;
                 if(memberships.find(membership=> membership.user.id === signedUserInfo.id)) return group
-               
+                console.log(signedUserInfo)
             }))
         })       
     },[signedUserInfo])
-    useEffect(()=>{
-        if(usersGroups){
-            setRejectedGroups(
-                usersGroups.filter(group=>{
-                    let memberships = group.memberships
-                    let membership = memberships.find(membership=> membership.user.id === signedUserInfo.id)
-                    if(membership.role == 'REJECTED') return group
-                }))
-            setAdminOrMemberGroups(
-                    usersGroups.filter(group=>{
-                        let memberships = group.memberships
-                        let membership = memberships.find(membership => membership.user.id === signedUserInfo.id)
-                        if(membership.role == 'ADMIN' || membership.role == 'MEMBER') return group
-                    }))
-            setPindingGroups(
-                usersGroups.filter(group=>{
-                    let memberships = group.memberships
-                    let membership = memberships.find(membership=> membership.user.id === signedUserInfo.id)
-                    if(membership.role == "PENDING") return group
-            }))
-        }
-    },[usersGroups])
+
 
     if(usersGroups){
         return <div className="mainpageAndPopUpContainer">
@@ -81,7 +76,7 @@ const MainPageMembership = ({signedUserInfo})=>{
             <h3 className="memberGroupsTitle groupsTitle">your Groups:</h3>
             {
                  adminOrMemberGroups.map(group=>{
-                    return <Group key={group.id} usergroup={group} setActiveGroup={setActiveGroup} setPopUpActive={setPopUpActive} />
+                    return <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
                 })
             }
             </div>
@@ -89,7 +84,7 @@ const MainPageMembership = ({signedUserInfo})=>{
                 <h3 className="PidingGroupsTitle groupsTitle">Pinding Groups:</h3>
                 {
                 pindingGroups.map(group=>{
-                    return <Group key={group.id} usergroup={group} setActiveGroup={setActiveGroup} setPopUpActive={setPopUpActive} />
+                    return <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
                 })
             }
                 
@@ -98,30 +93,20 @@ const MainPageMembership = ({signedUserInfo})=>{
                 <h3 className="rejectedGroupsTitle groupsTitle">rejected requests:</h3>
                 {
                 rejectedGroups.map(group=>{
-                    return <Group key={group.id} usergroup={group} setActiveGroup={setActiveGroup} setPopUpActive={setPopUpActive} />
+                    return <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
                 })
             }
             </div>
         </div>
-        <div style={popUpStyling} className="popUpDetails popUpMembership">
-           <p className="closePopUp" onClick={closeHandler}> <FontAwesomeIcon  icon={faTimes} /> </p>
-            <div className="chatOrRequests">
-                
-                <Chat />
-                
-            </div>
-            <div className="tabsNav">
-                <p className="tabNavIcon chatIcon"><FontAwesomeIcon icon={faCommentAlt} /></p>
-                <p className="tabNavIcon requestsIcon"><FontAwesomeIcon icon={faSignInAlt} /></p>
-            </div>
-        </div> 
+        {activeGroup?
+            isMember? 
+                isAdmin?<AdminPopUp popUpStyling={popUpStyling} setPopUpActive={setPopUpActive} />:<MemberPopUp popUpStyling={popUpStyling} setPopUpActive={setPopUpActive} /> 
+            :<NonMemberPopUp popUpStyling={popUpStyling} setPopUpActive={setPopUpActive} />:''
+        }
     </div> 
     }
     return (
         ''
-
-          
-        
     )
 }
 

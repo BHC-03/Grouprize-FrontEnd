@@ -1,12 +1,12 @@
 import React from "react"; 
+import { useSetRecoilState } from "recoil";
+import { activeGroupAtom} from "../RecoilStuff";
 
-const ExploreGroup = ({usergroup,setActiveGroup,setPopUpActive,setMembershipExistance,signedUserInfo})=>{
+const ExploreGroup = ({usergroup,setPopUpActive})=>{
+    const setActiveGroup = useSetRecoilState(activeGroupAtom);
     function enterGroupHandler(){
         setActiveGroup(usergroup)
         setPopUpActive(true);
-        setMembershipExistance(false);
-          let temp =  usergroup.group.memberships.find(membership=> membership.user.id === signedUserInfo.id )
-        setMembershipExistance(temp)
     }
     return(
         <div onClick={enterGroupHandler} className="group">

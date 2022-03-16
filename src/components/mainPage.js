@@ -6,17 +6,25 @@ import { Link } from "react-router-dom";
 import MainPageMembership from "./MainPageMembership";
 import MainPageExplore from "./MainPageExplore";
 import LoginForm from "./login";
+import { useRecoilState } from "recoil";
+import { userInfoAtom } from "../RecoilStuff/index";
 
-const MainPage = ({signedUserInfo,setSignedUserInfo,userInfo,setUserInfo})=>{
+const MainPage = ()=>{
+    const  [signedUserInfo,setSignedUserInfo] = useRecoilState(userInfoAtom);
     if(!signedUserInfo.token){
-        return <LoginForm setSignedUserInfo={setSignedUserInfo} signedUserInfo={signedUserInfo} userInfo={userInfo} setUserInfo={setUserInfo}/>
+        if(window.sessionStorage.getItem('userInfo')){
+            setSignedUserInfo(JSON.parse(sessionStorage.getItem('userInfo')))
+        }else{
+            return <LoginForm />
+        }
     }
+   
     return (
         <div className="mainPageContainer">
             <div className="Nav">
                 
                 <div className="homeIconContainer">
-                    <Link to={'/mainpage/'}>
+                    <Link to={'/mainpage/membership'}>
                         <FontAwesomeIcon className="homeIcon mainPageIcon" icon={faHome} />
                     </Link>
                 </div>
@@ -27,7 +35,10 @@ const MainPage = ({signedUserInfo,setSignedUserInfo,userInfo,setUserInfo})=>{
                 </div>
                 
             </div>
-            <MainPageMembership signedUserInfo={signedUserInfo} />
+            <Switch>
+                <Route path='/mainpage/membership' ><MainPageMembership /></Route>
+                <Route path='/mainpage/explore'  ><MainPageExplore /></Route>
+            </Switch>
         </div>
     )
 }

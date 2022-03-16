@@ -1,0 +1,38 @@
+elshamy : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ0NDIwOTUzLCJpYXQiOjE2NDQzMzQ1NTMsImp0aSI6IjY1MWFjZmMwZGYwNDQwZmNiYjYwMDQwNzJiMTdhMDM2IiwidXNlcl9pZCI6M30._M8Yn4ULjRbEi-FV6yz4bKloDrqbFK_PBCacLyXJYQg
+
+
+
+
+
+elshamy2  :  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ0NDIxMDE2LCJpYXQiOjE2NDQzMzQ2MTYsImp0aSI6IjgzZGY0ODhkNjNjYjQ3YTk4OTZjODdlZGRhNTE5NTczIiwidXNlcl9pZCI6Mn0.rAwQHS427G-WvAnphTxbrbROf-_L-rMF9zih49ScMCI
+
+
+
+   The Requests genration Fucnction!!
+                {
+                    activeGroup.memberships? activeGroup.memberships.map(membership=>{
+                        if(membership.role == "PENDING") return <Request key={membership.id} signedUserInfo={signedUserInfo} membership={membership} />
+                    }):''
+                }
+
+
+
+
+
+
+
+
+
+message generation : 
+    <div className="userMessageContainer message"><div className="userImage"></div><div className="messageInfo">
+                    <p className="userMessage">Hello and welcome</p>
+                    <p className="messageDate">17/10/2020 11:23pm</p>
+                    </div>
+                    </div>
+                <div className="othersMessageContainer message">
+                    <div className="otherImage"></div>
+                    <div className="messageInfo otherMessageInfo">
+                        <p className="otherMessage">Hi There Been a while</p>
+                        <p className="messageDate otherDate">17/10/2020 11:25pm</p>
+                    </div>
+                </div>

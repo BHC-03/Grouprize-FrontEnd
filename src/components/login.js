@@ -3,9 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope,faLock,faUser} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import ProtectedRoute from "./Protected.Route";
+import {userInfoAtom,gettingUserinfoAtom} from '../RecoilStuff/index';
+import { useSetRecoilState,useRecoilState } from "recoil";
 
-function LoginForm({setSignedUserInfo,signedUserInfo,userInfo,setUserInfo}){
+
+function LoginForm(){
+    const [userInfo,setUserInfo] = useRecoilState(gettingUserinfoAtom);
+    const setSignedUserInfo = useSetRecoilState(userInfoAtom);
     function loginSubmitHandler(){
         axios.post('http://127.0.0.1:8000/users/login/',
         {
@@ -15,6 +19,7 @@ function LoginForm({setSignedUserInfo,signedUserInfo,userInfo,setUserInfo}){
         }).then(
             data=>{
                 setSignedUserInfo(data.data);
+                window.sessionStorage.setItem('userInfo',JSON.stringify(data.data))
             }
         )
     }
@@ -43,7 +48,7 @@ function LoginForm({setSignedUserInfo,signedUserInfo,userInfo,setUserInfo}){
                         <input  value={userInfo.username} onChange={usernameHandler} type="text"className="textInput usernameInput" />
                     </div>
                 </div>
-            <Link to={'/mainpage/'}><p onClick={loginSubmitHandler} className="button loginSubmit">
+            <Link to={'/mainpage/membership'}><p onClick={loginSubmitHandler} className="button loginSubmit">
                 Login
             </p>
             </Link>
