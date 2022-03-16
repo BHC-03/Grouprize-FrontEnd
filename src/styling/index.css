@@ -242,18 +242,25 @@ body {
   bottom: 10px;
 }
 .Nav {
-  z-index: 10;
+  position: relative;
+  overflow-x: hidden;
+  padding-top: 20px;
+  z-index: 1;
   height: 100vh;
   width: 60px;
-  background-color: rgba(194, 183, 183, 0.637);
+  background-color: #00c3ff;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.mainPageIcon {
+.mainPageIconContainer {
   font-size: 2.3rem;
-  margin-top: 50px;
-  color: #ff379194;
+  margin-top: 40px;
+}
+.mainPageIcon {
+  color: #f87cb4;
+  z-index: 21;
+  margin-top: 12px;
 }
 .interest.selected {
   background-color: #167c95;
@@ -262,7 +269,7 @@ body {
   display: flex;
 }
 .mainPageMembershipContainer {
-  background-color: #00c3ff2a;
+  /* background-color: #00c3ff2a; */
   width: 100%;
   height: 100%;
   display: flex;
@@ -300,7 +307,7 @@ body {
   margin-left: 20px;
   font-weight: 800;
   font-size: 1.6rem;
-  color: #818581;
+  color: #00c3ff;
 }
 .mainpageAndPopUpContainer {
   height: 100vh;
@@ -330,7 +337,7 @@ body {
   transition: all 0.4s ease-in-out;
 }
 .mainPageExploreContainer {
-  background-color: #024455;
+  /* background-color: #024455; */
   height: 100%;
   transition: all 0.5s ease-in-out;
 }
@@ -344,7 +351,7 @@ body {
   font-size: 3rem;
   margin-bottom: 20px;
   margin-left: 10px;
-  color: #818581;
+  color: #00c3ff;
 }
 .groupTitleDetails {
   font-size: 5rem;
@@ -583,4 +590,7 @@ body {
   flex: 1;
   padding-left: 45%;
   border-right: none;
+}
+.mainPageIcon.active {
+  color: #00c3ff;
 }

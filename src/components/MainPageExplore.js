@@ -1,14 +1,12 @@
 import axios from "axios";
 import React,{useState,useEffect} from "react";
 import Group from "./group";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus ,faTimes,faCommentAlt,faSignInAlt} from "@fortawesome/free-solid-svg-icons";
-import Chat from "./Chat";
 import AdminPopUp from "./PopUps/adminPopUp";
 import MemberPopUp from "./PopUps/memberPopUp";
 import NonMemberPopUp from "./PopUps/nonMemberPopup";
 import { useRecoilValue} from "recoil";
 import { userInfoAtom,activeGroupAtom,isMemberSelector,isAdminSelector } from "../RecoilStuff/index";
+import { ClipLoader } from "react-spinners";
 const MainPageExplore = ()=>{
 
     //recoil shit
@@ -19,6 +17,7 @@ const MainPageExplore = ()=>{
 
 
     //local states 
+    const [loading,setLoading] = useState(true);
     const [groups,setGroups] = useState([]);
     const [popUpActive,setPopUpActive] = useState(false)
 
@@ -51,11 +50,12 @@ const MainPageExplore = ()=>{
         }
     }
     useEffect(()=>{
+        setLoading(true);
         if(signedUserInfo.token){
             axios.get('http://127.0.0.1:8000/ads/',{headers:{Authorization:`Bearer ${signedUserInfo.token}`}}).then(
             data=>{
-                console.log(data.data);
                 setGroups(data.data);
+                setLoading(false)
             }
         )
         }
@@ -68,7 +68,7 @@ const MainPageExplore = ()=>{
                 <h3 className="ExploreTitle mainPageTitle">Groups</h3>
                 <div className="exploreGroupsContainer">
                     {
-                        groups.map(group=>{
+                        loading?<ClipLoader color="#f87cb4" size={150} />:groups.map(group=>{
                             return <Group key={group.id}  usergroup={group}  setPopUpActive={setPopUpActive} />
                         })
                     }

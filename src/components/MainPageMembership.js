@@ -4,7 +4,7 @@ import Group from "./membershipGroup";
 import MemberPopUp from "./PopUps/memberPopUp";
 import NonMemberPopUp from "./PopUps/nonMemberPopup";
 import AdminPopUp from "./PopUps/adminPopUp";
-import Request from "./request";
+import { ClipLoader } from "react-spinners";
 import {
     userInfoAtom
     ,userGroupsAtom
@@ -16,6 +16,7 @@ import {
     ,isAdminSelector
  } from "../RecoilStuff/index";
 import { useRecoilValue,useRecoilState } from "recoil";
+import { Suspense } from "react/cjs/react.production.min";
 const MainPageMembership = ()=>{
 
     //Recoil Atoms And selectors
@@ -29,6 +30,7 @@ const MainPageMembership = ()=>{
     const isAdmin = useRecoilValue(isAdminSelector);
     //local States
     const [popUpActive,setPopUpActive] = useState(false)
+    const [loading,setLoading] = useState(true);
     let popUpStyling;
     let pageStyling;
     if(popUpActive){
@@ -59,12 +61,11 @@ const MainPageMembership = ()=>{
         axios.get('http://127.0.0.1:8000/groups/',{headers:{
             Authorization: `Bearer ${signedUserInfo.token}`
         }}).then(data=>{
-            console.log(data.data)
             setUsersGroups( data.data.filter(group=>{
                 let memberships = group.memberships;
                 if(memberships.find(membership=> membership.user.id === signedUserInfo.id)) return group
-                console.log(signedUserInfo)
             }))
+            setLoading(false);
         })       
     },[signedUserInfo])
 
@@ -74,27 +75,35 @@ const MainPageMembership = ()=>{
         <div style={pageStyling} className="mainPageMembershipContainer mainPageContainer">
             <div className="memberGroups groupsContainer">
             <h3 className="memberGroupsTitle groupsTitle">your Groups:</h3>
-            {
+            {   loading?<ClipLoader color="#f87cb4" size={150} />:
                  adminOrMemberGroups.map(group=>{
-                    return <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
+                    return( 
+                        <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
+                    )
                 })
             }
             </div>
             <div className="pindingGroups groupsContainer">
                 <h3 className="PidingGroupsTitle groupsTitle">Pinding Groups:</h3>
                 {
+                loading?<ClipLoader color="#f87cb4" size={150} />:
                 pindingGroups.map(group=>{
-                    return <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
-                })
+                   return( 
+                       <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
+                   )
+               })
             }
                 
             </div>
             <div className="rejectedGroups groupsContainer">
                 <h3 className="rejectedGroupsTitle groupsTitle">rejected requests:</h3>
                 {
+                loading?<ClipLoader color="#f87cb4" size={150} />:
                 rejectedGroups.map(group=>{
-                    return <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
-                })
+                   return( 
+                       <Group key={group.id} usergroup={group}  setPopUpActive={setPopUpActive} />
+                   )
+               })
             }
             </div>
         </div>

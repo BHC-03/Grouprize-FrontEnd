@@ -1,12 +1,12 @@
-import React from "react";
+import React,{lazy} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes,faCommentAlt,faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { Switch,Link } from "react-router-dom";
-import Chat from "../Chat";
 import Request from "../request";
 import { activeGroupAtom } from "../../RecoilStuff";
 import { useRecoilValue } from "recoil";
 import { Route } from "react-router-dom";
+import Chat from '../Chat'
 const AdminPopUp =({popUpStyling,setPopUpActive}) => {
   
     const activeGroup = useRecoilValue(activeGroupAtom);
@@ -18,7 +18,9 @@ const AdminPopUp =({popUpStyling,setPopUpActive}) => {
             <p className="closePopUp" onClick={closeHandler}> <FontAwesomeIcon  icon={faTimes} /> </p>
              <div className="chatOrRequests">
                  <Switch >
-                    <Route exact path={'/mainpage/membership'}><Chat /></Route>
+                    <Route exact path={'/mainpage/membership'}>
+                        <Chat />
+                        </Route>
                     <Route exact path={'/mainpage/membership/Requests'}>{
                         
                         activeGroup.memberships? activeGroup.memberships.map(membership=>{
