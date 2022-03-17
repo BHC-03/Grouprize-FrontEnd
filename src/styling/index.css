@@ -213,8 +213,8 @@ body {
   font-size: 18px;
 }
 .loginInputsContainer {
-  height: 130px;
-  top: 59%;
+  height: 140px;
+  top: 65%;
 }
 .registerBackButton {
   position: fixed;
@@ -593,4 +593,10 @@ body {
 }
 .mainPageIcon.active {
   color: #00c3ff;
+}
+.errorMessage {
+  color: rgb(235, 66, 66);
+  font-family: sans-serif;
+  font-size: 1.2rem;
+  /* text-shadow: 1px 1px 2px rgb(252, 109, 109); */
 }
