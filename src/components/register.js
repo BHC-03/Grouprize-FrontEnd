@@ -39,7 +39,11 @@ const RegisterForm = ({})=>{
             ,{id:[...interestsIds]},{headers:{
                 Authorization:`Bearer ${tempdata.token}`
             }}
-            )
+            ).then(data=>{
+                history.push('/mainpage/membership');
+            }).catch(err=>{
+                console.log(err);
+            })
             
             
 
