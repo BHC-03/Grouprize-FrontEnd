@@ -20,6 +20,13 @@ const useForm = (atom)=>{
         }else if(atom.password){
             setErrors(olderrors=>({...olderrors,password:''}))
         }
+
+        if(!atom.username){
+            setErrors(olderrors=>({...olderrors,username:'username is required'}))
+        }else if(atom.username){
+            setErrors(olderrors=>({...olderrors,username:''}))
+        }
+        
     },[atom])
 
     return([errors,setErrors]);

@@ -11,15 +11,17 @@ import styled from 'styled-components';
 import { motion } from "framer-motion";
 import { userInfoAtom } from "../RecoilStuff/index";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 
 const MainPage = ()=>{
     const  [signedUserInfo,setSignedUserInfo] = useRecoilState(userInfoAtom);
     const {pathname} = useLocation();
+    const history = useHistory();
     if(!signedUserInfo.token){
         if(window.sessionStorage.getItem('userInfo')){
             setSignedUserInfo(JSON.parse(sessionStorage.getItem('userInfo')))
         }else{
-            return <LoginForm />
+            return history.push('/login/');
         }
     }
    
