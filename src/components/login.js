@@ -13,10 +13,10 @@ function LoginForm(){
     const history = useHistory();
     const [userInfo,setUserInfo] = useRecoilState(gettingUserinfoAtom);
     const setSignedUserInfo = useSetRecoilState(userInfoAtom);
-    const errors = useForm(userInfo);
+    const [errors,setErrors] = useForm(userInfo);
     const [isGood,setIsGood] = useState(true);
     function loginSubmitHandler(){
-        if(errors){
+        if(errors.email || errors.password){
             return setIsGood(false);
         }
         axios.post('http://127.0.0.1:8000/users/login/',
@@ -32,7 +32,7 @@ function LoginForm(){
                 history.push('/mainpage/membership');
             }
         ).catch(err=>{
-            console.log(error);
+            setErrors(olderror=>({...olderror,email:'Please enter your email correctly',password:'please Enter your Password correctly'}))
         })
     }
     function emailHandler(e){
@@ -40,9 +40,6 @@ function LoginForm(){
     }
     function passwordHandler(e){
         setUserInfo({...userInfo,password:e.target.value})
-    }
-    function usernameHandler(e){
-        setUserInfo({...userInfo,username:e.target.value})
     }
     return (
         <div className="loginForm">

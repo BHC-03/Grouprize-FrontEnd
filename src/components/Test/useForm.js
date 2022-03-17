@@ -22,7 +22,7 @@ const useForm = (atom)=>{
         }
     },[atom])
 
-    return(errors)
+    return([errors,setErrors]);
 }
 
 export default useForm;
