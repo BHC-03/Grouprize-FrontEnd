@@ -1,4 +1,5 @@
 import React , {useState} from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope,faLock,faUser} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -6,8 +7,10 @@ import axios from "axios";
 import {userInfoAtom,gettingUserinfoAtom} from '../RecoilStuff/index';
 import { useSetRecoilState,useRecoilState } from "recoil";
 import useForm from "./Test/useForm";
+import { useHistory } from "react-router-dom";
 
 function LoginForm(){
+    const history = useHistory();
     const [userInfo,setUserInfo] = useRecoilState(gettingUserinfoAtom);
     const setSignedUserInfo = useSetRecoilState(userInfoAtom);
     const errors = useForm(userInfo);
@@ -26,8 +29,11 @@ function LoginForm(){
                 
                 setSignedUserInfo(data.data);
                 window.sessionStorage.setItem('userInfo',JSON.stringify(data.data))
+                history.push('/mainpage/membership');
             }
-        )
+        ).catch(err=>{
+            console.log(error);
+        })
     }
     function emailHandler(e){
         setUserInfo({...userInfo,email:e.target.value})
@@ -59,10 +65,10 @@ function LoginForm(){
                         )}
                     
                 </div>
-            <Link to={'/mainpage/membership'}><p onClick={loginSubmitHandler} className="button loginSubmit">
+            <p onClick={loginSubmitHandler} className="button loginSubmit">
                 Login
             </p>
-            </Link>
+            
             <p className="registerP">you don't have an account ? <Link to={'/register/'}><a href="#drg" className="registerA">Register</a></Link></p>
         </div>
     )
